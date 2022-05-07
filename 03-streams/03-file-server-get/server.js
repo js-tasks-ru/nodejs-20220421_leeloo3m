@@ -11,24 +11,17 @@ server.on('request', (req, res) => {
 
   const filepath = path.join(__dirname, 'files', pathname);
 
+  if(pathname.split('/').length > 1) { 
+    res.statusCode = 400;
+    res.end('error 400');
+    return;
+  };
+
   switch (req.method) {
     case 'GET':
       const stream = fs.createReadStream(filepath);
 
-      if(pathname.split('/').length > 1) { 
-        res.statusCode = 400;
-        res.end('error 400')
-      };
-
-      stream.on('data', (chunk) => {
-       const ret = res.write(chunk);
-       if(ret === false){
-         stream.pause();
-         ret.once('drain', () => {
-           stream.resume();
-         })
-       }
-      });
+      stream.pipe(res);
 
       stream.on('error', (err) => { 
         if(err.code == 'ENOENT') {
