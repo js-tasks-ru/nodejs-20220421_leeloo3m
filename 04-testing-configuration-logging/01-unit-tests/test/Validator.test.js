@@ -41,18 +41,17 @@ describe('testing-configuration-logging/unit-tests', () => {
         expect(errors[0]).to.have.property('error').and.to.be.equal('too long, expect 10, got 12');
       });
 
-      it('cтрока пустая', () => {
-        const errors = validator.validate({ name: '' });
+      it('обьект должен иметь поле name', () => {
+        const errors = validator.validate({ });
 
         expect(errors).to.have.length(1);
         expect(errors[0]).to.have.property('field').and.to.be.equal('name');
-        expect(errors[0]).to.have.property('error').and.to.be.equal('string can not be empty');
+        expect(errors[0]).to.have.property('error').and.to.be.equal('expect string, got undefined');
       });
     });
 
     describe('валидатор проверяет числовые поля', () => {
       const rules = {
-      
         age: {
           type: 'number',
           min: 18,
@@ -61,9 +60,9 @@ describe('testing-configuration-logging/unit-tests', () => {
       };
       
       const validator = new Validator(rules);
-
+     
       it('некорректный тип поля', () => {
-        const errors = validator.validate({ age: '5' });
+        const errors = validator.validate({age: 'la'});
 
         expect(errors).to.have.length(1);
         expect(errors[0]).to.have.property('field').and.to.be.equal('age');
@@ -86,13 +85,17 @@ describe('testing-configuration-logging/unit-tests', () => {
         expect(errors[0]).to.have.property('error').and.to.be.equal('too big, expect 27, got 40');
       });
 
-      it('число явлется отрицательным', () => {
-        const errors = validator.validate({ age: -3 });
+      
+      it('обьект должен иметь поле age', () => {
+        const errors = validator.validate({ });
 
         expect(errors).to.have.length(1);
         expect(errors[0]).to.have.property('field').and.to.be.equal('age');
-        expect(errors[0]).to.have.property('error').and.to.be.equal('can not be negative');
+        expect(errors[0]).to.have.property('error').and.to.be.equal('expect number, got undefined');
       });
+
+    
+
     });
   
   });

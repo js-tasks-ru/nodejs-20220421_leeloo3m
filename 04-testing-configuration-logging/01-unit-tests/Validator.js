@@ -19,6 +19,7 @@ module.exports = class Validator {
 
       switch (type) {
         case 'string':
+          
           if (value.length < rules.min) {
             errors.push({field, error: `too short, expect ${rules.min}, got ${value.length}`});
           }
@@ -35,9 +36,9 @@ module.exports = class Validator {
           }
           break;
       }
-      return errors;
+     
     }
 
-    
+    return errors;
   }
 };
