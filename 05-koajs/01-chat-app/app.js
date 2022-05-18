@@ -1,7 +1,7 @@
 const path = require('path');
 const Koa = require('koa');
 const app = new Koa();
-const Events = require('events');
+
 // я так понимаю - нужно два роутера завязать друг на друга. Создать длинные опросы. Get запрос должен подвисать до тех пор пока не придет Post запрос. 
 // 1. запрос пришел на сервер. get запрос. 
 // 2. Сервер не закрывает соединение, пока у него не возникнет сообщение для отсылки. ждем событие 'message'  и когда оно возникнет - отправить тело с сообщением клиентую
@@ -15,10 +15,10 @@ app.use(require('koa-bodyparser')());
 const Router = require('koa-router');
 const { resolve } = require('path');
 const router = new Router();
-const eventEmitter = new Events();
+
 
 router.get('/subscribe', async (ctx, next) => {
-    ctx.body = await new Promise(resolve => eventEmitter.on('newPost', message => resolve(message)));
+    ctx.body = await new Promise(resolve => app.on('newPost', (message, ctx) => resolve(message)));
     ctx.status = 200;
 });
 
@@ -26,7 +26,7 @@ router.post('/publish', async (ctx, next) => {
     const message = ctx.request.body.message;
     if(message) {
         await new Promise(resolve=> {
-            resolve(eventEmitter.emit('newPost', message))
+            resolve(ctx.app.emit('newPost', message, ctx))
         });
     };
     ctx.status = 200;
