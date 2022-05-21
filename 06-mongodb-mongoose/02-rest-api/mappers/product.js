@@ -1,3 +1,5 @@
+
+
 module.exports = function mapProduct(product) {
   return {
     id: product.id,
