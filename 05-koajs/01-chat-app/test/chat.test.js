@@ -12,7 +12,8 @@ describe('koajs/chat-app', () => {
     });
 
     after((done) => {
-      server.close(done);
+      server.close();
+      done();
     });
 
     describe('POST /publish', () => {

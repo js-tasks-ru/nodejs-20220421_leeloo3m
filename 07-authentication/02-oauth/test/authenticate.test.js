@@ -27,6 +27,10 @@ describe('authentication/oauth', () => {
 
         expect(user).to.be.false;
         expect(msg).to.equal('Не указан email');
+        // after((done) => {
+        //   connection.close();
+        //   done();
+        // })
         done();
       });
     });
