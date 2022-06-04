@@ -136,7 +136,7 @@ describe('websockets/chat', () => {
 
       const response = await request({
         method: 'get',
-        url: 'http://localhost:3001/api/messages',
+        url: 'http://localhost:3001/api/messages',//откудова взялся 3001 порт? в коде я его не нашла (или плохо искала)
         headers: {
           'Authorization': 'Bearer token',
         },
